@@ -13,6 +13,15 @@ from src.masks import get_mask_account, get_mask_card_number
     ],
 )
 def test_get_mask_card_number(card_number: str, expected: str) -> None:
+    """
+    Тестирует функцию get_mask_card_number.
+
+    Параметры:
+    - card_number: Номер карты, который нужно замаскировать.
+    - expected_result: Ожидаемый результат маскирования.
+
+    Проверяется, что результат маскирования соответствует ожидаемому.
+    """
     assert get_mask_card_number(card_number) == expected
 
 
@@ -26,6 +35,16 @@ def test_get_mask_card_number(card_number: str, expected: str) -> None:
     ],
 )
 def test_get_mask_card_number_invalid(invalid_card_number: str) -> None:
+    """
+    Тестирует функцию get_mask_card_number на некорректных номерах карт.
+
+    Параметры:
+    - invalid_card_number: Неверный номер карты (слишком короткий, слишком длинный или содержащий некорректные
+    символы).
+
+    Ожидаемое поведение:
+    - Функция get_mask_card_number должна вызывать исключение ValueError для некорректных номеров карт.
+    """
     with pytest.raises(ValueError):
         get_mask_card_number(invalid_card_number)
 
@@ -39,6 +58,15 @@ def test_get_mask_card_number_invalid(invalid_card_number: str) -> None:
     ],
 )
 def test_get_mask_account(account_number: str, expected: str) -> None:
+    """
+    Тестирует функцию get_mask_account.
+
+    Параметры:
+    - account_number: Номер счета, который нужно замаскировать.
+    - expected_result: Ожидаемый результат маскирования.
+
+    Проверяется, что результат маскирования соответствует ожидаемому.
+    """
     assert get_mask_account(account_number) == expected
 
 
@@ -51,5 +79,14 @@ def test_get_mask_account(account_number: str, expected: str) -> None:
     ],
 )
 def test_get_mask_account_invalid(invalid_account_number: str) -> None:
+    """
+    Тестирует функцию get_mask_account на некорректных номерах счетов.
+
+    Параметры:
+    - invalid_account_number: Неверный номер счета (слишком короткий или содержащий некорректные символы).
+
+    Ожидаемое поведение:
+    - Функция get_mask_account должна вызывать исключение ValueError для некорректных номеров счетов.
+    """
     with pytest.raises(ValueError):
         get_mask_account(invalid_account_number)
