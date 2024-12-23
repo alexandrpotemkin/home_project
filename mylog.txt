@@ -1,0 +1,10 @@
+my_function start
+my_function ok, execution time: 0.0000 seconds
+my_function start
+my_function ok, execution time: 0.0000 seconds
+my_function start
+my_function ok, execution time: 0.0000 seconds
+my_function start
+my_function ok, execution time: 0.0000 seconds
+my_function start
+my_function ok, execution time: 0.0000 seconds
