@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 
 from src.decorators import log
@@ -35,16 +37,28 @@ except ZeroDivisionError:
     pass
 
 
-def test_my_function_log(capsys):
-    my_function(1, 2)
-    captured = capsys.readouterr()
-    assert "my_function start" in captured.out
-    assert "my_function ok" in captured.out
+def test_my_function_log(capsys: Any) -> None:
+    """
+    Тестирует логирование функции my_function.
+
+    Проверяет, что строки логирования начала и успешного завершения
+    работы функции выводятся в стандартный вывод.
+    """
+    my_function(1, 2)  # Вызов тестируемой функции.
+    captured = capsys.readouterr()  # Перехват вывода в stdout/stderr.
+    assert "my_function start" in captured.out, "Лог начала выполнения функции отсутствует"
+    assert "my_function ok" in captured.out, "Лог успешного завершения выполнения функции отсутствует"
 
 
-def test_divide_log_error(capsys):
-    with pytest.raises(ZeroDivisionError):
+def test_divide_log_error(capsys: Any) -> None:
+    """
+    Тестирует логирование ошибки функции divide.
+
+    Проверяет, что при возникновении ZeroDivisionError
+    в лог записывается сообщение об ошибке.
+    """
+    with pytest.raises(ZeroDivisionError):  # Ожидаем ZeroDivisionError.
         divide(10, 0)
-    captured = capsys.readouterr()
-    assert "divide start" in captured.out
-    assert "divide error: ZeroDivisionError" in captured.out
+    captured = capsys.readouterr()  # Перехват вывода в stdout/stderr.
+    assert "divide start" in captured.out, "Лог начала выполнения функции отсутствует"
+    assert "divide error: ZeroDivisionError" in captured.out, "Лог ошибки отсутствует"

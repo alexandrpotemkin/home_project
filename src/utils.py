@@ -1,6 +1,7 @@
-import os
 import json
-from typing import List, Dict
+import os
+from typing import Dict, List
+
 
 def load_transactions(file_path: str) -> List[Dict]:
     """
@@ -14,7 +15,7 @@ def load_transactions(file_path: str) -> List[Dict]:
         return []
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
             if isinstance(data, list):
                 return data
@@ -22,4 +23,3 @@ def load_transactions(file_path: str) -> List[Dict]:
         pass
 
     return []
-

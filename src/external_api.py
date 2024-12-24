@@ -1,7 +1,9 @@
 import os
+from typing import Dict
+
 import requests
 from dotenv import load_dotenv
-from typing import List, Dict
+
 
 def convert_to_rub(transaction: Dict) -> float:
     """
@@ -21,12 +23,8 @@ def convert_to_rub(transaction: Dict) -> float:
     if not api_key:
         raise ValueError("API ключ для Exchange Rates Data API не найден в переменных окружения.")
 
-    url = f"https://api.apilayer.com/exchangerates_data/convert"
-    params = {
-        "from": currency,
-        "to": "RUB",
-        "amount": amount
-    }
+    url = "https://api.apilayer.com/exchangerates_data/convert"
+    params = {"from": currency, "to": "RUB", "amount": amount}
     headers = {"apikey": api_key}
 
     response = requests.get(url, headers=headers, params=params)
