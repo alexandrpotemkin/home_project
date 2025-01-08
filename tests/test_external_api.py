@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 from src.external_api import convert_to_rub
 
 
-@patch("your_module.requests.get")
-@patch("your_module.os.getenv", return_value="test_api_key")
+@patch("src.external_api.requests.get")
+@patch("src.external_api.os.getenv", return_value="test_api_key")
 def test_convert_to_rub_usd(mock_getenv: MagicMock, mock_get: MagicMock) -> None:
     """
     Тестирует функцию convert_to_rub для транзакции в USD.
@@ -21,8 +21,8 @@ def test_convert_to_rub_usd(mock_getenv: MagicMock, mock_get: MagicMock) -> None
     assert result == 7500.0
 
 
-@patch("your_module.requests.get")
-@patch("your_module.os.getenv", return_value="test_api_key")
+@patch("src.external_api.requests.get")
+@patch("src.external_api.os.getenv", return_value="test_api_key")
 def test_convert_to_rub_rub(mock_getenv: MagicMock, mock_get: MagicMock) -> None:
     """
     Тестирует функцию convert_to_rub для транзакции в рублях.
