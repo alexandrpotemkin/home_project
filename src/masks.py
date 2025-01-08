@@ -1,3 +1,14 @@
+import logging
+
+# Настройка логера для модуля masks
+logger = logging.getLogger("masks")
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler("logs/masks.log", mode="w")
+file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s: %(message)s")
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+
+
 def get_mask_card_number(card_number: str) -> str:
     """
     Маскирует номер банковской карты.
@@ -9,12 +20,17 @@ def get_mask_card_number(card_number: str) -> str:
     :return: Замаскированный номер карты.
     :raises ValueError: Если номер карты не содержит 16 цифр или содержит нецифровые символы.
     """
-    card_number = card_number.replace(" ", "")
-    if len(card_number) != 16 or not card_number.isdigit():
-        raise ValueError("Номер карты должен содержать 16 цифр.")
+    try:
+        card_number = card_number.replace(" ", "")
+        if len(card_number) != 16 or not card_number.isdigit():
+            raise ValueError("Номер карты должен содержать 16 цифр.")
 
-    masked_card_number = f"{card_number[:4]} {card_number[4:6]}** **** {card_number[12:]}"
-    return masked_card_number
+        masked_card_number = f"{card_number[:4]} {card_number[4:6]}** **** {card_number[12:]}"
+        logger.info("Успешная маскировка номера карты.")
+        return masked_card_number
+    except ValueError as e:
+        logger.error(f"Ошибка маскировки номера карты: {e}")
+        raise
 
 
 def get_mask_account(account_number: str) -> str:
@@ -28,9 +44,14 @@ def get_mask_account(account_number: str) -> str:
     :return: Замаскированный номер счета.
     :raises ValueError: Если номер счета содержит менее 6 цифр или нецифровые символы.
     """
-    account_number = account_number.replace(" ", "")
-    if len(account_number) < 6 or not account_number.isdigit():
-        raise ValueError("Номер счета должен содержать хотя бы 6 цифр.")
+    try:
+        account_number = account_number.replace(" ", "")
+        if len(account_number) < 6 or not account_number.isdigit():
+            raise ValueError("Номер счета должен содержать хотя бы 6 цифр.")
 
-    masked_account_number = f"**{account_number[-4:]}"
-    return masked_account_number
+        masked_account_number = f"**{account_number[-4:]}"
+        logger.info("Успешная маскировка номера счета.")
+        return masked_account_number
+    except ValueError as e:
+        logger.error(f"Ошибка маскировки номера счета: {e}")
+        raise
