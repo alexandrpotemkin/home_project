@@ -97,7 +97,28 @@ d) Модуль masks
 
 Проверяется форматирование номера карты.
 
-e) Запуск тестов
+e) Модуль file_reader
+- Тест для sample_csv_data:
+
+Возвращает пример содержимого CSV-файла.
+
+- Тест для sample_excel_data:
+
+Возвращает пример содержимого Excel в виде DataFrame.
+
+- Тесты для read_transactions_from_csv:
+
+Тест для read_transactions_from_csv с использованием mock для pandas.read_csv.
+
+Тест для read_transactions_from_csv с несуществующим файлом.
+
+- Тесты для read_transactions_from_excel:
+
+Тест для read_transactions_from_excel с использованием mock для pandas.read_excel.
+
+Тест для read_transactions_from_excel с несуществующим файлом.
+
+f) Запуск тестов
 
 - Чтобы запустить тесты, выполните следующую команду:
 
