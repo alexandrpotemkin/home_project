@@ -21,7 +21,7 @@ def search_transactions_by_description(transactions: List[Dict[str, str]], query
 
 def count_transactions_by_category(transactions: List[Dict[str, str]], categories: List[str]) -> Dict[str, int]:
     """
-    Подсчитывает количество банковских операций по категориям.
+    Подсчитывает количество банковских операций определенного типа.
     """
     if not transactions:
         raise ValueError("Список транзакций пуст.")
