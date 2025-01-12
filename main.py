@@ -1,24 +1,84 @@
+import os
+from src.file_reader import read_transactions_from_csv, read_transactions_from_excel
+from src.utils import load_transactions
 from src.processing import filter_by_state, sort_by_date
-from src.widget import get_date, mask_account_card
+from src.generators import filter_by_currency
+from src.decorators import log
 
-if __name__ == "__main__":
-    print(mask_account_card("Maestro 1596837868705199"))
-    print(mask_account_card("Счет 64686473678894779589"))
-    print(mask_account_card("MasterCard 7158300734726758"))
-    print(mask_account_card("Счет 35383033474447895560"))
-    print(mask_account_card("Visa Classic 6831982476737658"))
-    print(mask_account_card("Visa Platinum 8990922113665229"))
-    print(mask_account_card("Visa Gold 5999414228426353"))
-    print(mask_account_card("Счет 73654108430135874305"))
 
-    print(get_date("2024-03-11T02:26:18.671407"))
+@log()
+def main():
+    print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
 
-    list_of_dictionaries = [
-        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-    ]
+    while True:
+        print("Выберите необходимый пункт меню:")
+        print("1. Получить информацию о транзакциях из JSON-файла")
+        print("2. Получить информацию о транзакциях из CSV-файла")
+        print("3. Получить информацию о транзакциях из XLSX-файла")
+        print("4. Выйти из программы")
 
-    print(filter_by_state(list_of_dictionaries, "EXECUTED"))
-    print(sort_by_date(list_of_dictionaries, descending=True))
+        choice = input("Введите номер пункта: ").strip()
+
+        if choice == "1":
+            print("Для обработки выбран JSON-файл.")
+            file_path = os.path.join(os.path.dirname(__file__), "data", "transactions.json")
+            transactions = load_transactions(file_path)
+        elif choice == "2":
+            print("Для обработки выбран CSV-файл.")
+            file_path = os.path.join(os.path.dirname(__file__), "data", "transactions.csv")
+            transactions = read_transactions_from_csv(file_path)
+        elif choice == "3":
+            print("Для обработки выбран XLSX-файл.")
+            file_path = os.path.join(os.path.dirname(__file__), "data", "transactions.xlsx")
+            transactions = read_transactions_from_excel(file_path)
+        else:
+            print("Неверный пункт меню. Программа завершена.")
+            return
+
+        if not transactions:
+            print("Не удалось загрузить данные транзакций.")
+            return
+
+        # Фильтрация по статусу
+        valid_states = {"EXECUTED", "CANCELED", "PENDING"}
+        while True:
+            state = input(
+                f"Введите статус, по которому необходимо выполнить фильтрацию. "
+                f"Доступные статусы: {', '.join(valid_states)}\n"
+            ).strip().upper()
+
+            if state in valid_states:
+                transactions = filter_by_state(transactions, state)
+                print(f"Операции отфильтрованы по статусу \"{state}\"")
+                break
+            else:
+                print(f"Статус операции \"{state}\" недоступен.")
+
+        if not transactions:
+            print(f"Нет операций со статусом \"{state}\".")
+            continue
+
+        # Сортировка по дате
+        sort_choice = input("Отсортировать операции по дате? Да/Нет: ").strip().lower()
+        if sort_choice in {"да", "yes"}:
+            order = input("Отсортировать по возрастанию или по убыванию? ").strip().lower()
+            descending = order not in {"по возрастанию", "возрастание"}
+            transactions = sort_by_date(transactions, descending)
+
+        # Фильтрация по валюте
+        currency_choice = input("Выводить только рублевые транзакции? Да/Нет: ").strip().lower()
+        if currency_choice in {"да", "yes"}:
+            transactions = list(filter_by_currency(transactions, "RUB"))
+
+        if not transactions:
+            print("Нет операций, соответствующих вашему запросу.")
+            continue
+
+        # Вывод результатов
+        print("Операции, соответствующие вашему запросу:")
+        for transaction in transactions:
+            print(transaction)
+
+
+if __name__ == '__main__':
+    main()
