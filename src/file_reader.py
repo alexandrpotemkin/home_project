@@ -1,14 +1,11 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import pandas as pd
 
 
-def read_transactions_from_csv(file_path: str) -> List[Dict[str, str]]:
+def read_transactions_from_csv(file_path: str) -> List[Dict[str, Any]]:
     """
     Считывает транзакции из CSV-файла и возвращает их в виде списка словарей.
-
-    :param file_path: Путь к CSV-файлу.
-    :return: Список транзакций в формате словарей с ключами "date", "amount", "description".
     """
     try:
         data = pd.read_csv(file_path)
@@ -16,7 +13,7 @@ def read_transactions_from_csv(file_path: str) -> List[Dict[str, str]]:
         return [
             {
                 "date": str(transaction["date"]),
-                "amount": str(transaction["amount"]),
+                "amount": float(transaction["amount"]),
                 "description": str(transaction["description"]),
             }
             for transaction in transactions
@@ -25,12 +22,9 @@ def read_transactions_from_csv(file_path: str) -> List[Dict[str, str]]:
         raise ValueError(f"Ошибка при чтении CSV-файла: {e}")
 
 
-def read_transactions_from_excel(file_path: str) -> List[Dict[str, str]]:
+def read_transactions_from_excel(file_path: str) -> List[Dict[str, Any]]:
     """
     Считывает транзакции из Excel-файла и возвращает их в виде списка словарей.
-
-    :param file_path: Путь к Excel-файлу.
-    :return: Список транзакций в формате словарей с ключами "date", "amount", "description".
     """
     try:
         data = pd.read_excel(file_path)
@@ -38,7 +32,7 @@ def read_transactions_from_excel(file_path: str) -> List[Dict[str, str]]:
         return [
             {
                 "date": str(transaction["date"]),
-                "amount": str(transaction["amount"]),
+                "amount": float(transaction["amount"]),
                 "description": str(transaction["description"]),
             }
             for transaction in transactions
